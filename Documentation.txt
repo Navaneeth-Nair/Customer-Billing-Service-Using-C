@@ -1,0 +1,26 @@
+Let's Start With The Include Preprocessors Directive.
+
+1. #include <stdio.h>:stdio.h is a header file in the C programming language that stands for "standard input/output." It is an essential part of the C Standard Library and provides functions and macros for performing input and output operations. These operations can include reading from or writing to files, the console, or other data streams. stdio.h plays a crucial role in enabling C programs to interact with the outside world, making it a fundamental component of C programming.
+
+Here are some of the key functions, macros, and concepts associated with stdio.h:
+
+File I/O Functions: stdio.h includes functions like fopen, fclose, fread, fwrite, fscanf, and fprintf, which allow you to work with files. These functions enable opening, closing, reading, and writing to files, making it possible to manipulate data stored on disk.
+
+Standard Streams: stdio.h defines three standard I/O streams:
+
+stdin: Standard input stream, typically representing the keyboard.
+stdout: Standard output stream, often linked to the console or terminal.
+stderr: Standard error stream, used for error messages.
+These streams can be accessed and manipulated using functions like printf and scanf, which are built on top of the more basic I/O functions.
+
+Formatted Input and Output: stdio.h provides various functions for formatted I/O, allowing you to read and write data in a structured manner. Functions like printf and scanf use format specifiers to specify the format of data being processed.
+
+Buffering: Input and output operations in C are often buffered for efficiency. stdio.h allows you to control buffering behavior using functions like setbuf and setvbuf. You can choose between full buffering, line buffering, or no buffering.
+
+File Pointers: To keep track of the current position within a file, stdio.h uses file pointers. Functions like fseek and ftell are used to manipulate and query the position of the file pointer.
+
+Error Handling: The standard I/O functions return error codes to indicate the success or failure of operations. The global variable errno can be used to obtain more information about specific errors.
+
+File Streams: In C, file streams are represented by a data type called FILE. You need to declare FILE pointers to interact with files. For example, you might declare a FILE pointer to represent a file being read or written to.
+
+2. #include<mysql.h>: 
