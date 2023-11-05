@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS customers(
 );
 
 CREATE TABLE IF NOT EXISTS billing_records(
-    order_id INT,
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
     item_names VARCHAR(100),
     quantity INT,

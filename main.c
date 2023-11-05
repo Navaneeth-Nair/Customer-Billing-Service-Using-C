@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <mysql.h>
 #include <windows.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 //This Code Is Assuming Youre Going To Do This For A Small Scale Cafe Or Something Similar
@@ -19,9 +21,9 @@ int main(){
     {
         {"Burger" , 110 } ,
         {"Pizza" , 150 },
-        {"Coca Cola" , 25 },
-        {"French Fries" , 70 },
-        {"Grilled Cheese" , 120 },
+        {"CocaCola" , 25 },
+        {"FrenchFries" , 70 },
+        {"GrilledCheese" , 120 },
     };
 
     int menu_items = sizeof(Menu)/sizeof(Menu[0]);
@@ -91,8 +93,8 @@ int main(){
     for(i = 0; i< order; i++){
         printf("%d. %s ------ %d\n", i+1 ,all_orders[i] , quantity[i]);
 
+    }
     getchar();
-
     printf("Is This Correct?(y/n) ");
    
     scanf("%c", &option);
@@ -130,7 +132,7 @@ int main(){
     }
 
     float total_cost = 0.0;
-
+    getchar();
     for (i = 0; i < order; i++) {
         // Find the corresponding menu item's price
         int menu_item_index = -1;
@@ -147,7 +149,10 @@ int main(){
         }
     }
 
-    printf("Total Cost: %.2f Rs\n", total_cost);
+    printf("\nCalculating Total Price....");
+    sleep(2);
+
+    printf("\nTotal Cost: %.2f Rs\n", total_cost);
 
     mysql_library_init(0, NULL, NULL);
 
@@ -160,15 +165,20 @@ int main(){
         mysql_library_end(); // Cleanup MySQL library
         return 1;
     }
+   
+    if (mysql_options(conn, MYSQL_OPT_SSL_MODE, "DISABLED") != 0) {
+    fprintf(stderr, "mysql_options(MYSQL_OPT_SSL_MODE) failed: %s\n", mysql_error(conn));
+    mysql_close(conn);
+    return 1;
+}
 
-    if (mysql_real_connect(conn, "localhost", "root", "navaneeth69420112233@", "billing_db", 0, NULL, 0) == NULL) {
-        fprintf(stderr, "mysql_real_connect() failed\n");
-        mysql_close(conn);
-        mysql_library_end(); // Cleanup MySQL library
-        return 1;
+    if (mysql_real_connect(conn, "localhost", "root", "navaneeth69420112233@", "billing_db", 3306, NULL, 0) == NULL) {
+    fprintf(stderr, "mysql_real_connect() failed: %s\n", mysql_error(conn));
+    mysql_close(conn);
+    return 1;
     }
 
-        // Execute SQL queries to insert order records into the 'billing_records' table
+    // Execute SQL queries to insert order records into the 'billing_records' table
     char order_insert_query[255];
     for (i = 0; i < order; i++) {
         sprintf(order_insert_query, "INSERT INTO billing_records (customer_id, item_names, quantity, total_cost) VALUES (LAST_INSERT_ID(), '%s', %d, %.2f)",
@@ -177,6 +187,7 @@ int main(){
         if (mysql_query(conn, order_insert_query)) {
             fprintf(stderr, "INSERT into billing_records failed: %s\n", mysql_error(conn));
         }
+    }
 
     // Close the database connection
     mysql_close(conn);
@@ -184,7 +195,6 @@ int main(){
     // Cleanup MySQL library
     mysql_library_end();
 
-    }
-    return 0;
-    }
+
+    
 }
