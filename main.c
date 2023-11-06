@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <mysql.h>
-#include <windows.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -166,13 +165,13 @@ int main(){
         return 1;
     }
    
-    if (mysql_options(conn, MYSQL_OPT_SSL_MODE, "DISABLED") != 0) {
-    fprintf(stderr, "mysql_options(MYSQL_OPT_SSL_MODE) failed: %s\n", mysql_error(conn));
-    mysql_close(conn);
-    return 1;
-}
+//     if (mysql_options(conn, MYSQL_OPT_SSL_MODE, "DISABLED") != 0) {
+//     fprintf(stderr, "mysql_options(MYSQL_OPT_SSL_MODE) failed: %s\n", mysql_error(conn));
+//     mysql_close(conn);
+//     return 1;
+// }
 
-    if (mysql_real_connect(conn, "localhost", "root", "navaneeth69420112233@", "billing_db", 3306, NULL, 0) == NULL) {
+    if (mysql_real_connect(conn, "localhost", "root", "P@ssw0rd123!", "billing_db", 3306, NULL, 0) == NULL) {
     fprintf(stderr, "mysql_real_connect() failed: %s\n", mysql_error(conn));
     mysql_close(conn);
     return 1;
