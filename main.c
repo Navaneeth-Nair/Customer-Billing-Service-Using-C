@@ -5,6 +5,39 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
+#include <cups/cups.h>
+
+
+void printBill(const char *customerName, const char *orderList, const char *quantityList, float totalCost) {
+    if (cupsInit(NULL, NULL) == 0) {
+        cupsSetUser("nav"); // Replace "username" with your system username
+        const char *title ="Bill Print Job";
+        int num_options = 0;
+        cups_option_t *options = NULL;
+
+        int jobId = cupsCreateJob(CUPS_HTTP_DEFAULT, "bill","bill", num_options, options);
+
+        if (jobId) {
+            cupsStartDocument(CUPS_HTTP_DEFAULT, "Bill Print Job", jobId, CUPS_FORMAT_AUTO, num_options,options);
+
+            char billContent[255];
+            snprintf(billContent, sizeof(billContent),
+                     "Customer Name: %s\nOrder List: %s\nQuantities: %s\nTotal Cost: %.2f Rs",
+                     customerName, orderList, quantityList, totalCost);
+
+            cupsWriteRequestData(CUPS_HTTP_DEFAULT, billContent, strlen(billContent));
+            cupsFinishDocument(CUPS_HTTP_DEFAULT, "Bill Print Job");
+            cupsFinishJob(CUPS_HTTP_DEFAULT, jobId);
+        } else {
+            fprintf(stderr, "Failed to create a print job\n");
+        }
+        cupsFreeDests(0, NULL);
+        cupsSetUser(NULL);
+        cupsUnInit();
+    } else {
+        fprintf(stderr, "Failed to initialize CUPS\n");
+    }
+}
 
 
 //This Code Is Assuming Youre Going To Do This For A Small Scale Cafe Or Something Similar
@@ -195,5 +228,12 @@ int main(){
     mysql_library_end();
 
 
+
+    printBill(customer_name, all_orders,quantity,total_cost);
+    sleep(2);
+
+    printf("Thank You For Choosing Us!!");
+    sleep(2);
+    exit;
     
 }
