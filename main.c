@@ -47,7 +47,7 @@ struct FoodItem {
     int price;                    //A Structure Is Made In Which The Name And Prices Of The Food Will Be Stored and Billed
 };
 
-int main(){
+int main(int argv , char *argc){
     int order,i;
     struct FoodItem Menu[] =    //Array Is Initialized In Which The Prices And Name Of It Will Be Declared And Initialized
     {
@@ -132,6 +132,7 @@ int main(){
     scanf("%c", &option);
     
     option = tolower(option);
+    int num;
 
     if (option == 'y')
     {
@@ -140,7 +141,23 @@ int main(){
     else
     {
         printf("Let's Fix The Error!\n");
+        printf("Do You Want To Change A Specific Order Or Do The Order All Over Again?(1/2)[1 - Specific Order \n2 - Complete Again.]");
+        scanf("%d" , &num);
+
+        if (num == 1){
+          for (i = 0; i < order; i++){
+            printf("%d. %s ------ %d\n"), i+1 , all_orders[i],quantity[i]);
+          } 
+          printf("Which Order Do You Want To Change?")
+          scanf("%d" , &num);
+          printf("What Do You Want Instead Of it?");
+          scanf("%c" , &all_orders[num-1]);
+        }
+        else {
+        printf("Restarting Order.");
         goto order_part;
+      free(all_orders[]);
+        }
     }
     //Asks Customer For Their Name
     char customer_name[255];
