@@ -195,6 +195,30 @@ int main(){
     // Cleanup MySQL library
     mysql_library_end();
 
+    PRINTDLG pd;
+    ZeroMemory(&pd, sizeof(PRINTDLG));
+        pd.lStructSize = sizeof(PRINTDLG);
 
+    // Set up the PRINTDLG structure
+    if (PrintDlg(&pd)) {
+        // User selected a printer and clicked "Print"
+
+        // Open a printer
+        HANDLE printerHandle;
+        if (OpenPrinter(pd.hDevNames, &printerHandle, NULL)) {
+            // Prepare your data to print
+            char printData[512];
+            sprintf(printData, "***********************\nOrder %d for %s\n***********************\n", order, customer_name);
+
+            // Send data to the printer
+            DWORD bytesWritten;
+            WritePrinter(printerHandle, printData, strlen(printData), &bytesWritten);
+
+            // Close the printer
+            ClosePrinter(printerHandle);
+        }
+    }
     
+
+    return 0;
 }
